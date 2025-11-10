@@ -3,6 +3,9 @@
   functions = "netlify/functions"
   publish = "."
 
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "PORT"
+
 [functions]
   external_node_modules = ["express", "mongoose", "socket.io"]
   node_bundler = "esbuild"
