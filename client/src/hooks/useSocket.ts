@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 interface SocketCallbacks {
   onCommentCreated?: () => void;
@@ -15,6 +15,12 @@ export const useSocket = (postSlug: string, callbacks: SocketCallbacks) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
+    // Skip WebSocket if URL is not configured (e.g., on Netlify/production)
+    if (!SOCKET_URL || SOCKET_URL.trim() === '') {
+      console.log('WebSocket disabled - VITE_SOCKET_URL not configured');
+      return;
+    }
+
     socketRef.current = io(SOCKET_URL, {
       transports: ['websocket', 'polling'],
     });
