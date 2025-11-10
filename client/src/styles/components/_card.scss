@@ -2,15 +2,7 @@
 @use '../mixins' as *;
 
 .card {
-  background: var(--bg-surface);
-  backdrop-filter: var(--backdrop-filter);
-  -webkit-backdrop-filter: var(--backdrop-filter);
-  border: 1px solid var(--border-color);
-  border-radius: $border-radius-lg;
-  padding: $spacing-lg;
-  transition: $transition-slow;
-  box-shadow: 0 8px 32px 0 rgba(0,0,0, 0.37);
-
+  @include card;
 
   &-header {
     padding-bottom: $spacing-md;

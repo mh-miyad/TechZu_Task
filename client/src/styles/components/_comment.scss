@@ -1,5 +1,5 @@
-@use '../variables' as *;
-@use '../mixins' as *;
+@use "../variables" as *;
+@use "../mixins" as *;
 
 .comments-container {
   max-width: 900px;
@@ -45,7 +45,7 @@
       @include input-base;
       width: auto;
       padding: $spacing-xs $spacing-md;
-      background-color: rgba(255,255,255,0.1);
+      background-color: rgba(255, 255, 255, 0.1);
       border: 1px solid var(--border-color);
       color: var(--text-primary);
     }
@@ -59,7 +59,7 @@
 }
 
 .comment-form {
-  @extend .card;
+  @include card;
   margin-bottom: $spacing-xl;
 
   h3 {
@@ -71,7 +71,7 @@
 }
 
 .comment-item {
-  @extend .card;
+  @include card;
   margin-bottom: $spacing-lg;
   transition: $transition;
   animation: scaleIn 0.2s ease-in-out;
@@ -201,7 +201,7 @@
 }
 
 .empty-state {
-  @extend .card;
+  @include card;
   @include flex-center;
   flex-direction: column;
   padding: $spacing-2xl;

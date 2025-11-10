@@ -13,10 +13,13 @@
 }
 
 @mixin card {
-  background: $surface;
-  border: 1px solid $border;
-  border-radius: $border-radius;
+  background: var(--bg-surface);
+  backdrop-filter: var(--backdrop-filter);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  border: 1px solid var(--border-color);
+  border-radius: $border-radius-lg;
   padding: $spacing-lg;
+  transition: $transition-slow;
 }
 
 @mixin button-base {

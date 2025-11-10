@@ -1,15 +1,16 @@
 [plugin:vite:css] [sass] Undefined mixin.
 ╷
-112 │ @include button($danger-color, white);
-│ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 │ @include button-base;
+│ ^^^^^^^^^^^^^^^^^^^^
 ╵
-src\styles\components_navbar.scss 112:7 @use
-src\styles\main.scss 7:1 root stylesheet
-E:/TechZu_Task/client/src/styles/main.scss:112:7
-[plugin:vite:css] [sass] The target selector was not found.
-Use "@extend .card !optional" to avoid this error.
+src\styles\components_button.scss 4:3 @use
+src\styles\main.scss 8:1 root stylesheet
+E:/TechZu_Task/client/src/styles/main.scss:4:3
+[plugin:vite:css] [sass] Undefined mixin.
 ╷
-62 │ @extend .card;
-│ ^^^^^^^^^^^^^
+18 │ @include input-base;
+│ ^^^^^^^^^^^^^^^^^^^
 ╵
-src\styles\components_comment.scss 62:3 root stylesheet
+src\styles\components_form.scss 18:5 @use
+src\styles\main.scss 9:1 root stylesheet
+E:/TechZu_Task/client/src/styles/main.scss:18:5

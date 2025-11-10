@@ -13,7 +13,7 @@ interface CommentListProps {
 export const CommentList = ({ postSlug }: CommentListProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
@@ -22,7 +22,7 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
 
   const loadComments = useCallback(async () => {
     setLoading(true);
-    setError("");
+    setError(null);
     try {
       const data = await commentService.getComments(postSlug, page, 10, sortBy);
       setComments(data.comments);
@@ -91,7 +91,7 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
         </div>
       </div>
 
-      {error && <div className="form-error">{error}</div>}
+      {error && !loading && <div className="form-error">{error}</div>}
 
       {loading ? (
         <div className="loading-spinner">
