@@ -1,3 +1,6 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
 .home-page {
   min-height: 100vh;
   background: $surface;

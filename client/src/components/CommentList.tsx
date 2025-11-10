@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { commentService } from "../api/commentService";
 import type { Comment, SortOption } from "../types";
 import { AddComment } from "./AddComment";
 import { CommentItem } from "./CommentItem";
+import { useSocket } from "../hooks/useSocket";
 
 interface CommentListProps {
   postSlug: string;
@@ -17,7 +18,7 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
-  const loadComments = async () => {
+  const loadComments = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
@@ -29,11 +30,13 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postSlug, page, sortBy]);
+
+  useSocket(postSlug, loadComments);
 
   useEffect(() => {
     loadComments();
-  }, [postSlug, page, sortBy]);
+  }, [loadComments]);
 
   const handleReply = (parentId: string) => {
     setReplyingTo(parentId);

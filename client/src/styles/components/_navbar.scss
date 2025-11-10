@@ -1,3 +1,6 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
 .navbar {
   background: $primary-color;
   color: white;
