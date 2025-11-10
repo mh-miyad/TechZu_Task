@@ -3,7 +3,15 @@ import { io, Socket } from 'socket.io-client';
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
 
-export const useSocket = (postSlug: string, onCommentEvent: () => void) => {
+interface SocketCallbacks {
+  onCommentCreated?: () => void;
+  onCommentUpdated?: () => void;
+  onCommentDeleted?: () => void;
+  onCommentLiked?: () => void;
+  onCommentDisliked?: () => void;
+}
+
+export const useSocket = (postSlug: string, callbacks: SocketCallbacks) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -20,27 +28,27 @@ export const useSocket = (postSlug: string, onCommentEvent: () => void) => {
 
     socket.on('commentCreated', () => {
       console.log('New comment created');
-      onCommentEvent();
+      callbacks.onCommentCreated?.();
     });
 
     socket.on('commentUpdated', () => {
       console.log('Comment updated');
-      onCommentEvent();
+      callbacks.onCommentUpdated?.();
     });
 
     socket.on('commentDeleted', () => {
       console.log('Comment deleted');
-      onCommentEvent();
+      callbacks.onCommentDeleted?.();
     });
 
     socket.on('commentLiked', () => {
       console.log('Comment liked');
-      onCommentEvent();
+      callbacks.onCommentLiked?.();
     });
 
     socket.on('commentDisliked', () => {
       console.log('Comment disliked');
-      onCommentEvent();
+      callbacks.onCommentDisliked?.();
     });
 
     socket.on('disconnect', () => {
@@ -53,7 +61,7 @@ export const useSocket = (postSlug: string, onCommentEvent: () => void) => {
         socket.disconnect();
       }
     };
-  }, [postSlug, onCommentEvent]);
+  }, [postSlug]);
 
   return socketRef.current;
 };

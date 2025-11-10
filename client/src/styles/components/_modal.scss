@@ -3,9 +3,10 @@
 
 .home-page {
   min-height: 100vh;
-  background: $surface;
+  background: var(--bg-primary);
   @include flex-center;
   padding: $spacing-xl $spacing-md;
+  transition: background-color 0.3s ease;
 
   .home-content {
     max-width: 900px;
@@ -14,7 +15,7 @@
     h1 {
       font-size: 3rem;
       font-weight: 800;
-      color: $text-primary;
+      color: var(--text-primary);
       margin-bottom: $spacing-lg;
 
       @include responsive(mobile) {
@@ -24,7 +25,7 @@
 
     p {
       font-size: 1.25rem;
-      color: $text-secondary;
+      color: var(--text-secondary);
       margin-bottom: $spacing-2xl;
       line-height: 1.6;
     }
@@ -40,17 +41,25 @@
   .feature-card {
     @include card;
     text-align: center;
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+    transition: $transition;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: $shadow-lg;
+    }
 
     h3 {
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: $spacing-sm;
-      color: $text-primary;
+      color: var(--text-primary);
     }
 
     p {
       font-size: 0.875rem;
-      color: $text-secondary;
+      color: var(--text-secondary);
     }
   }
 

@@ -1,0 +1,102 @@
+@use '../variables' as *;
+
+.notification-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  max-width: 400px;
+  pointer-events: none;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  pointer-events: all;
+  animation: slideInRight 0.3s ease-in-out;
+  transition: $transition;
+
+  &:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  &-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  &-message {
+    flex: 1;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+  }
+
+  &-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1.125rem;
+    padding: $spacing-xs;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-sm;
+    transition: $transition-fast;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text-primary);
+    }
+  }
+
+  &-success {
+    border-left: 4px solid $success-color;
+
+    .notification-icon {
+      color: $success-color;
+    }
+  }
+
+  &-error {
+    border-left: 4px solid $danger-color;
+
+    .notification-icon {
+      color: $danger-color;
+    }
+  }
+
+  &-warning {
+    border-left: 4px solid $warning-color;
+
+    .notification-icon {
+      color: $warning-color;
+    }
+  }
+
+  &-info {
+    border-left: 4px solid $info-color;
+
+    .notification-icon {
+      color: $info-color;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .notification-container {
+    left: 20px;
+    right: 20px;
+    max-width: none;
+  }
+}

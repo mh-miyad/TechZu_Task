@@ -4,6 +4,7 @@ import type { Comment, SortOption } from "../types";
 import { AddComment } from "./AddComment";
 import { CommentItem } from "./CommentItem";
 import { useSocket } from "../hooks/useSocket";
+import { useNotification } from "../context/NotificationContext";
 
 interface CommentListProps {
   postSlug: string;
@@ -17,6 +18,7 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
   const [totalPages, setTotalPages] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const { addNotification } = useNotification();
 
   const loadComments = useCallback(async () => {
     setLoading(true);
@@ -32,7 +34,26 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
     }
   }, [postSlug, page, sortBy]);
 
-  useSocket(postSlug, loadComments);
+  useSocket(postSlug, {
+    onCommentCreated: () => {
+      addNotification('info', 'New comment added');
+      loadComments();
+    },
+    onCommentUpdated: () => {
+      addNotification('info', 'Comment updated');
+      loadComments();
+    },
+    onCommentDeleted: () => {
+      addNotification('info', 'Comment deleted');
+      loadComments();
+    },
+    onCommentLiked: () => {
+      loadComments();
+    },
+    onCommentDisliked: () => {
+      loadComments();
+    },
+  });
 
   useEffect(() => {
     loadComments();

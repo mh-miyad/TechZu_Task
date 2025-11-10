@@ -13,7 +13,7 @@
   h1 {
     font-size: 2rem;
     font-weight: 700;
-    color: $text-primary;
+    color: var(--text-primary);
   }
 }
 
@@ -21,9 +21,10 @@
   @include flex-between;
   margin-bottom: $spacing-lg;
   padding: $spacing-md;
-  background: $surface;
+  background: var(--bg-surface);
   border-radius: $border-radius;
-  border: 1px solid $border;
+  border: 1px solid var(--border-color);
+  animation: slideInDown 0.3s ease-in-out;
 
   .sort-control {
     display: flex;
@@ -33,7 +34,7 @@
     label {
       font-size: 0.875rem;
       font-weight: 500;
-      color: $text-secondary;
+      color: var(--text-secondary);
     }
 
     select {
@@ -45,29 +46,35 @@
 
   .comments-count {
     font-size: 0.875rem;
-    color: $text-muted;
+    color: var(--text-muted);
   }
 }
 
 .comment-form {
   @include card;
   margin-bottom: $spacing-xl;
+  background: var(--bg-surface);
+  border-color: var(--border-color);
 
   h3 {
     font-size: 1.125rem;
     font-weight: 600;
     margin-bottom: $spacing-md;
-    color: $text-primary;
+    color: var(--text-primary);
   }
 }
 
 .comment-item {
   @include card;
   margin-bottom: $spacing-md;
+  background: var(--bg-surface);
+  border-color: var(--border-color);
   transition: $transition;
+  animation: scaleIn 0.2s ease-in-out;
 
   &:hover {
     box-shadow: $shadow-md;
+    transform: translateY(-2px);
   }
 
   &-header {
@@ -82,12 +89,12 @@
 
     .author-name {
       font-weight: 600;
-      color: $text-primary;
+      color: var(--text-primary);
     }
 
     .comment-date {
       font-size: 0.75rem;
-      color: $text-muted;
+      color: var(--text-muted);
     }
   }
 
@@ -97,7 +104,7 @@
   }
 
   &-content {
-    color: $text-secondary;
+    color: var(--text-secondary);
     margin-bottom: $spacing-md;
     line-height: 1.6;
   }
@@ -107,7 +114,7 @@
     align-items: center;
     gap: $spacing-lg;
     padding-top: $spacing-sm;
-    border-top: 1px solid $border;
+    border-top: 1px solid var(--border-color);
   }
 
   &-reaction {
@@ -119,8 +126,8 @@
     border: none;
     border-radius: $border-radius-sm;
     cursor: pointer;
-    transition: $transition;
-    color: $text-muted;
+    transition: $transition-fast;
+    color: var(--text-muted);
     font-size: 0.875rem;
 
     &:disabled {
@@ -129,7 +136,8 @@
     }
 
     &:not(:disabled):hover {
-      background: $background;
+      background: var(--bg-primary);
+      transform: scale(1.05);
     }
 
     &.active-like {
@@ -164,7 +172,7 @@
   margin-left: $spacing-2xl;
   margin-top: $spacing-md;
   padding-left: $spacing-md;
-  border-left: 2px solid $border;
+  border-left: 2px solid var(--border-color);
 
   @include responsive(mobile) {
     margin-left: $spacing-md;
@@ -178,7 +186,7 @@
   padding: $spacing-lg 0;
 
   &-info {
-    color: $text-secondary;
+    color: var(--text-secondary);
     font-size: 0.875rem;
   }
 }
@@ -191,12 +199,12 @@
 
   .icon {
     font-size: 3rem;
-    color: $text-muted;
+    color: var(--text-muted);
     margin-bottom: $spacing-md;
   }
 
   p {
-    color: $text-muted;
+    color: var(--text-muted);
     font-size: 1rem;
   }
 }

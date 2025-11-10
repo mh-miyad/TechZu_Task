@@ -29,6 +29,9 @@
   max-width: 450px;
   width: 100%;
   box-shadow: $shadow-md;
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+  animation: scaleIn 0.3s ease-in-out;
 }
 
 .loading-spinner {

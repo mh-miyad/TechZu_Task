@@ -1,0 +1,29 @@
+@use './variables' as *;
+
+:root {
+  --bg-primary: #{$background};
+  --bg-surface: #{$surface};
+  --border-color: #{$border};
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --text-muted: #{$text-muted};
+  --navbar-bg: #{$primary-color};
+  --navbar-text: #ffffff;
+}
+
+.dark-theme {
+  --bg-primary: #{$dark-background};
+  --bg-surface: #{$dark-surface};
+  --border-color: #{$dark-border};
+  --text-primary: #{$dark-text-primary};
+  --text-secondary: #{$dark-text-secondary};
+  --text-muted: #{$dark-text-muted};
+  --navbar-bg: #{$dark-surface};
+  --navbar-text: #{$dark-text-primary};
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

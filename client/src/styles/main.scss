@@ -1,5 +1,7 @@
 @use './variables' as *;
 @use './mixins' as *;
+@use './theme';
+@use './animations';
 @use './reset';
 @use './layout';
 @use './components/navbar';
@@ -8,3 +10,4 @@
 @use './components/card';
 @use './components/comment';
 @use './components/modal';
+@use './components/notification';

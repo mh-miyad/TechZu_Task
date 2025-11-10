@@ -2,12 +2,13 @@
 @use '../mixins' as *;
 
 .navbar {
-  background: $primary-color;
-  color: white;
+  background: var(--navbar-bg);
+  color: var(--navbar-text);
   box-shadow: $shadow;
   position: sticky;
   top: 0;
   z-index: 100;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   .navbar-container {
     max-width: 1200px;
@@ -19,7 +20,8 @@
   .navbar-brand {
     font-size: 1.5rem;
     font-weight: 700;
-    color: white;
+    color: var(--navbar-text);
+    transition: $transition;
   }
 
   .navbar-menu {
@@ -27,15 +29,75 @@
     align-items: center;
     gap: $spacing-md;
 
+    .navbar-theme-toggle {
+      @include button-base;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--navbar-text);
+      padding: $spacing-sm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.125rem;
+      transition: $transition-fast;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(180deg);
+      }
+    }
+
+    .navbar-notification {
+      position: relative;
+
+      &-btn {
+        @include button-base;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--navbar-text);
+        padding: $spacing-sm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.125rem;
+        transition: $transition-fast;
+        position: relative;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          animation: bounce 0.5s ease;
+        }
+      }
+
+      &-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: $danger-color;
+        color: white;
+        font-size: 0.625rem;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px;
+        animation: pulse 2s infinite;
+      }
+    }
+
     .navbar-welcome {
       font-size: 0.875rem;
+      color: var(--navbar-text);
     }
 
     .navbar-link {
       padding: $spacing-sm $spacing-md;
       background: rgba(255, 255, 255, 0.1);
       border-radius: $border-radius-sm;
-      color: white;
+      color: var(--navbar-text);
       transition: $transition;
 
       &:hover {
@@ -47,9 +109,11 @@
       @include button-base;
       background: $danger-color;
       color: white;
+      transition: $transition;
 
       &:hover {
         background: $danger-hover;
+        transform: scale(1.05);
       }
     }
 
@@ -57,9 +121,11 @@
       @include button-base;
       background: $success-color;
       color: white;
+      transition: $transition;
 
       &:hover {
         background: $success-hover;
+        transform: scale(1.05);
       }
     }
   }

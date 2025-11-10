@@ -4,29 +4,32 @@
 .card {
   @include card;
   box-shadow: $shadow-sm;
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+  transition: $transition;
 
   &-header {
     margin-bottom: $spacing-md;
     padding-bottom: $spacing-md;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid var(--border-color);
 
     h1, h2, h3 {
       margin: 0;
-      color: $text-primary;
+      color: var(--text-primary);
     }
   }
 
   &-body {
     p {
       margin-bottom: $spacing-md;
-      color: $text-secondary;
+      color: var(--text-secondary);
     }
   }
 
   &-footer {
     margin-top: $spacing-md;
     padding-top: $spacing-md;
-    border-top: 1px solid $border;
+    border-top: 1px solid var(--border-color);
   }
 }
 
@@ -36,12 +39,12 @@
   h1 {
     font-size: 2rem;
     font-weight: 700;
-    color: $text-primary;
+    color: var(--text-primary);
     margin-bottom: $spacing-sm;
   }
 
   p {
     font-size: 1.125rem;
-    color: $text-secondary;
+    color: var(--text-secondary);
   }
 }
