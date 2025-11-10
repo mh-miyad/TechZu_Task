@@ -22,8 +22,8 @@ const io = new Server(httpServer, {
   cors: {
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     methods: ["GET", "POST"],
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 // Middleware
@@ -38,25 +38,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Make io accessible to routes
-app.set('io', io);
+app.set("io", io);
 
 // --- Socket.IO Events ---
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   // Join a room for a specific post
-  socket.on('joinPost', (postSlug) => {
+  socket.on("joinPost", (postSlug) => {
     socket.join(postSlug);
     console.log(`Socket ${socket.id} joined post: ${postSlug}`);
   });
 
   // Leave a room
-  socket.on('leavePost', (postSlug) => {
+  socket.on("leavePost", (postSlug) => {
     socket.leave(postSlug);
     console.log(`Socket ${socket.id} left post: ${postSlug}`);
   });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
   });
 });

@@ -1,0 +1,20 @@
+[build]
+  command = "echo 'Building Functions'"
+  functions = "netlify/functions"
+  publish = "."
+
+[functions]
+  external_node_modules = ["express", "mongoose", "socket.io"]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  force = true
+  from = "/api/*"
+  status = 200
+  to = "/.netlify/functions/api/:splat"
+
+[[redirects]]
+  force = true
+  from = "/*"
+  status = 200
+  to = "/.netlify/functions/api/:splat"
