@@ -2,20 +2,25 @@
 @use '../mixins' as *;
 
 .card {
-  @include card;
-  box-shadow: $shadow-sm;
   background: var(--bg-surface);
-  border-color: var(--border-color);
-  transition: $transition;
+  backdrop-filter: var(--backdrop-filter);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  border: 1px solid var(--border-color);
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  transition: $transition-slow;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0, 0.37);
+
 
   &-header {
-    margin-bottom: $spacing-md;
     padding-bottom: $spacing-md;
     border-bottom: 1px solid var(--border-color);
+    margin-bottom: $spacing-md;
 
     h1, h2, h3 {
       margin: 0;
       color: var(--text-primary);
+      font-weight: 600;
     }
   }
 
@@ -37,7 +42,7 @@
   margin-bottom: $spacing-xl;
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: $spacing-sm;

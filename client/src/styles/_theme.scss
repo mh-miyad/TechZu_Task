@@ -9,17 +9,19 @@
   --text-muted: #{$text-muted};
   --navbar-bg: #{$primary-color};
   --navbar-text: #ffffff;
+  --backdrop-filter: none;
 }
 
 .dark-theme {
-  --bg-primary: #{$dark-background};
-  --bg-surface: #{$dark-surface};
-  --border-color: #{$dark-border};
+  --bg-primary: #{$dark-body-bg};
+  --bg-surface: #{$dark-glass-bg};
+  --border-color: #{$dark-glass-border};
   --text-primary: #{$dark-text-primary};
   --text-secondary: #{$dark-text-secondary};
   --text-muted: #{$dark-text-muted};
-  --navbar-bg: #{$dark-surface};
+  --navbar-bg: #{$dark-glass-bg};
   --navbar-text: #{$dark-text-primary};
+  --backdrop-filter: blur(10px);
 }
 
 body {

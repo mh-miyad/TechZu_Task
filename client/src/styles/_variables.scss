@@ -26,6 +26,7 @@ $text-primary: #1e293b;
 $text-secondary: #64748b;
 $text-muted: #94a3b8;
 
+// Dark Theme
 $dark-background: #0a0f1e;
 $dark-surface: #1a2332;
 $dark-surface-hover: #242d3f;
@@ -34,13 +35,19 @@ $dark-text-primary: #f1f5f9;
 $dark-text-secondary: #cbd5e1;
 $dark-text-muted: #94a3b8;
 
-$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+// Glassmorphism
+$dark-glass-bg: rgba(26, 35, 50, 0.6);
+$dark-glass-border: rgba(255, 255, 255, 0.1);
+$dark-body-bg: linear-gradient(120deg, #0a0f1e, #1a2332);
+
+
+$font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
 
-$border-radius: 8px;
-$border-radius-lg: 12px;
-$border-radius-sm: 4px;
+$border-radius: 12px;
+$border-radius-lg: 16px;
+$border-radius-sm: 8px;
 
 $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 $shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
@@ -57,3 +64,9 @@ $spacing-2xl: 3rem;
 $transition: all 0.2s ease-in-out;
 $transition-fast: all 0.15s ease-in-out;
 $transition-slow: all 0.3s ease-in-out;
+
+
+$navbar-height: 70px;
+$sidebar-width: 250px;
+$page-max-width: 1200px;
+

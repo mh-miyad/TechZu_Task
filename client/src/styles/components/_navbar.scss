@@ -3,17 +3,21 @@
 
 .navbar {
   background: var(--navbar-bg);
+  backdrop-filter: var(--backdrop-filter);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  border-bottom: 1px solid var(--border-color);
   color: var(--navbar-text);
-  box-shadow: $shadow;
   position: sticky;
   top: 0;
   z-index: 100;
   transition: background-color 0.3s ease, color 0.3s ease;
+  height: $navbar-height;
 
   .navbar-container {
-    max-width: 1200px;
+    max-width: $page-max-width;
     margin: 0 auto;
-    padding: $spacing-md;
+    padding: 0 $spacing-md;
+    height: 100%;
     @include flex-between;
   }
 
@@ -31,18 +35,18 @@
 
     .navbar-theme-toggle {
       @include button-base;
-      background: rgba(255, 255, 255, 0.1);
+      background: transparent;
       color: var(--navbar-text);
       padding: $spacing-sm;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      font-size: 1.125rem;
-      transition: $transition-fast;
+      font-size: 1.25rem;
+      transition: $transition-slow;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
         transform: rotate(180deg);
       }
     }
@@ -52,38 +56,36 @@
 
       &-btn {
         @include button-base;
-        background: rgba(255, 255, 255, 0.1);
+        background: transparent;
         color: var(--navbar-text);
         padding: $spacing-sm;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        font-size: 1.125rem;
+        font-size: 1.25rem;
         transition: $transition-fast;
         position: relative;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.1);
           animation: bounce 0.5s ease;
         }
       }
 
       &-badge {
         position: absolute;
-        top: -4px;
-        right: -4px;
+        top: -2px;
+        right: -2px;
         background: $danger-color;
         color: white;
-        font-size: 0.625rem;
-        font-weight: 700;
-        min-width: 18px;
-        height: 18px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2px;
+        @include flex-center;
+        border: 2px solid var(--bg-surface);
         animation: pulse 2s infinite;
       }
     }
@@ -91,54 +93,48 @@
     .navbar-welcome {
       font-size: 0.875rem;
       color: var(--navbar-text);
+      font-weight: 500;
     }
 
     .navbar-link {
       padding: $spacing-sm $spacing-md;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: $border-radius-sm;
+      border-radius: $border-radius;
       color: var(--navbar-text);
       transition: $transition;
+      font-weight: 500;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
       }
     }
 
     .navbar-btn-logout {
-      @include button-base;
-      background: $danger-color;
-      color: white;
-      transition: $transition;
-
+      @include button($danger-color, white);
       &:hover {
         background: $danger-hover;
-        transform: scale(1.05);
       }
     }
 
     .navbar-btn-register {
-      @include button-base;
-      background: $success-color;
-      color: white;
-      transition: $transition;
-
-      &:hover {
+      @include button($success-color, white);
+       &:hover {
         background: $success-hover;
-        transform: scale(1.05);
       }
     }
   }
 
   @include responsive(mobile) {
+    .navbar-container {
+      padding: 0 $spacing-sm;
+    }
     .navbar-menu {
-      flex-wrap: wrap;
       gap: $spacing-sm;
     }
-
+    .navbar-brand {
+      font-size: 1.2rem;
+    }
     .navbar-welcome {
-      width: 100%;
-      text-align: center;
+      display: none;
     }
   }
 }

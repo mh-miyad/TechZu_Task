@@ -35,6 +35,12 @@
   }
 }
 
+@mixin button($bg, $color) {
+  @include button-base;
+  background: $bg;
+  color: $color;
+}
+
 @mixin input-base {
   width: 100%;
   padding: $spacing-sm $spacing-md;

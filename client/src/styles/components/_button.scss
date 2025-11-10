@@ -3,75 +3,101 @@
 
 .btn {
   @include button-base;
+  @include button($secondary-color, white);
+  transition: $transition-fast;
 
-  &-primary {
-    background: $primary-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background: $primary-hover;
-    }
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
   }
+}
 
-  &-secondary {
-    background: $secondary-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background: $secondary-hover;
-    }
+.btn-primary {
+  @include button($primary-color, white);
+  &:hover:not(:disabled) {
+    background: $primary-hover;
   }
+}
 
-  &-success {
-    background: $success-color;
-    color: white;
+.btn-secondary {
+  @include button($secondary-color, white);
+   &:hover:not(:disabled) {
+    background: $secondary-hover;
+  }
+}
 
-    &:hover:not(:disabled) {
-      background: $success-hover;
-    }
+.btn-success {
+  @include button($success-color, white);
+  &:hover:not(:disabled) {
+    background: $success-hover;
+  }
+}
+
+.btn-danger {
+  @include button($danger-color, white);
+  &:hover:not(:disabled) {
+    background: $danger-hover;
+  }
+}
+
+.btn-outline {
+  @include button(transparent, var(--text-primary));
+  border: 1px solid var(--border-color);
+
+  &:hover:not(:disabled) {
+    background: var(--bg-surface);
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+}
+
+.btn-link {
+  background: transparent;
+  color: $primary-color;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+
+  &:hover:not(:disabled) {
+    color: $primary-hover;
+    background: rgba($primary-color, 0.1);
+  }
+}
+
+.btn-small {
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.875rem;
+}
+
+.btn-large {
+  padding: $spacing-md $spacing-xl;
+  font-size: 1.125rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-icon {
+  @include button-base;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: $spacing-sm;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: $transition;
+
+  &:hover:not(:disabled) {
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
   }
 
   &-danger {
-    background: $danger-color;
-    color: white;
-
     &:hover:not(:disabled) {
-      background: $danger-hover;
+      background: rgba($danger-color, 0.1);
+      color: $danger-color;
     }
-  }
-
-  &-outline {
-    background: transparent;
-    border: 1px solid $border;
-    color: $text-primary;
-
-    &:hover:not(:disabled) {
-      background: $background;
-    }
-  }
-
-  &-link {
-    background: transparent;
-    color: $primary-color;
-    padding: $spacing-xs $spacing-sm;
-
-    &:hover:not(:disabled) {
-      color: $primary-hover;
-      text-decoration: underline;
-    }
-  }
-
-  &-small {
-    padding: $spacing-xs $spacing-sm;
-    font-size: 0.75rem;
-  }
-
-  &-large {
-    padding: $spacing-md $spacing-xl;
-    font-size: 1rem;
-  }
-
-  &-full {
-    width: 100%;
   }
 }

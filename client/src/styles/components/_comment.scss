@@ -2,18 +2,20 @@
 @use '../mixins' as *;
 
 .comments-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: $spacing-xl $spacing-md;
 }
 
 .comments-header {
   margin-bottom: $spacing-xl;
+  text-align: center;
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-primary);
+    margin-bottom: $spacing-sm;
   }
 }
 
@@ -22,8 +24,10 @@
   margin-bottom: $spacing-lg;
   padding: $spacing-md;
   background: var(--bg-surface);
-  border-radius: $border-radius;
+  backdrop-filter: var(--backdrop-filter);
+  -webkit-backdrop-filter: var(--backdrop-filter);
   border: 1px solid var(--border-color);
+  border-radius: $border-radius-lg;
   animation: slideInDown 0.3s ease-in-out;
 
   .sort-control {
@@ -41,23 +45,25 @@
       @include input-base;
       width: auto;
       padding: $spacing-xs $spacing-md;
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
     }
   }
 
   .comments-count {
     font-size: 0.875rem;
-    color: var(--text-muted);
+    font-weight: 500;
+    color: var(--text-secondary);
   }
 }
 
 .comment-form {
-  @include card;
+  @extend .card;
   margin-bottom: $spacing-xl;
-  background: var(--bg-surface);
-  border-color: var(--border-color);
 
   h3 {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: $spacing-md;
     color: var(--text-primary);
@@ -65,21 +71,20 @@
 }
 
 .comment-item {
-  @include card;
-  margin-bottom: $spacing-md;
-  background: var(--bg-surface);
-  border-color: var(--border-color);
+  @extend .card;
+  margin-bottom: $spacing-lg;
   transition: $transition;
   animation: scaleIn 0.2s ease-in-out;
+  position: relative;
 
   &:hover {
-    box-shadow: $shadow-md;
+    border-color: rgba($primary-color, 0.5);
     transform: translateY(-2px);
   }
 
   &-header {
     @include flex-between;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-md;
   }
 
   &-author {
@@ -93,38 +98,40 @@
     }
 
     .comment-date {
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       color: var(--text-muted);
     }
   }
 
   &-actions {
     display: flex;
-    gap: $spacing-sm;
+    gap: $spacing-xs;
   }
 
   &-content {
     color: var(--text-secondary);
-    margin-bottom: $spacing-md;
-    line-height: 1.6;
+    margin: $spacing-md 0;
+    line-height: 1.7;
+    font-size: 1rem;
   }
 
   &-footer {
     display: flex;
     align-items: center;
-    gap: $spacing-lg;
-    padding-top: $spacing-sm;
+    gap: $spacing-md;
+    padding-top: $spacing-md;
+    margin-top: $spacing-md;
     border-top: 1px solid var(--border-color);
   }
 
   &-reaction {
     display: flex;
     align-items: center;
-    gap: $spacing-xs;
+    gap: $spacing-sm;
     padding: $spacing-xs $spacing-sm;
     background: transparent;
     border: none;
-    border-radius: $border-radius-sm;
+    border-radius: $border-radius;
     cursor: pointer;
     transition: $transition-fast;
     color: var(--text-muted);
@@ -136,18 +143,17 @@
     }
 
     &:not(:disabled):hover {
-      background: var(--bg-primary);
-      transform: scale(1.05);
+      color: $primary-color;
     }
 
     &.active-like {
       color: $primary-color;
-      background: rgba(37, 99, 235, 0.1);
+      font-weight: 600;
     }
 
     &.active-dislike {
       color: $danger-color;
-      background: rgba(239, 68, 68, 0.1);
+      font-weight: 600;
     }
 
     .icon {
@@ -161,21 +167,24 @@
     color: $primary-color;
     padding: $spacing-xs $spacing-sm;
     font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: $border-radius;
 
     &:hover:not(:disabled) {
-      background: rgba(37, 99, 235, 0.1);
+      background: rgba($primary-color, 0.1);
     }
   }
 }
 
 .comment-replies {
-  margin-left: $spacing-2xl;
-  margin-top: $spacing-md;
-  padding-left: $spacing-md;
+  margin-left: $spacing-lg;
+  margin-top: $spacing-lg;
+  padding-left: $spacing-lg;
   border-left: 2px solid var(--border-color);
 
   @include responsive(mobile) {
-    margin-left: $spacing-md;
+    margin-left: $spacing-sm;
+    padding-left: $spacing-sm;
   }
 }
 
@@ -192,6 +201,7 @@
 }
 
 .empty-state {
+  @extend .card;
   @include flex-center;
   flex-direction: column;
   padding: $spacing-2xl;

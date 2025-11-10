@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaEdit, FaTrash, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { commentService } from "../api/commentService";
 import { useAuth } from "../context/AuthContext";
 import type { Comment } from "../types";
@@ -105,17 +106,16 @@ export const CommentItem = ({
           <div className="comment-item-actions">
             <button
               onClick={() => setIsEditing(true)}
-              className="btn btn-link btn-small"
+              className="btn-icon"
             >
-              Edit
+              <FaEdit />
             </button>
             <button
               onClick={handleDelete}
               disabled={loading}
-              className="btn btn-link btn-small"
-              style={{ color: "#ef4444" }}
+              className="btn-icon btn-icon-danger"
             >
-              Delete
+              <FaTrash />
             </button>
           </div>
         )}
@@ -160,7 +160,7 @@ export const CommentItem = ({
           disabled={!isAuthenticated || loading}
           className={`comment-item-reaction ${hasLiked ? "active-like" : ""}`}
         >
-          <span className="icon">👍</span>
+          <span className="icon"><FaThumbsUp /></span>
           <span>{comment.likeCount}</span>
         </button>
 
@@ -169,7 +169,7 @@ export const CommentItem = ({
           disabled={!isAuthenticated || loading}
           className={`comment-item-reaction ${hasDisliked ? "active-dislike" : ""}`}
         >
-          <span className="icon">👎</span>
+          <span className="icon"><FaThumbsDown /></span>
           <span>{comment.dislikeCount}</span>
         </button>
 
