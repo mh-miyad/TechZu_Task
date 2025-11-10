@@ -78,6 +78,3 @@ Notes
 Please send us the git repo link that has public access. And also please ensure that we properly have access to the .env file or your environment variables.
 Conclusion
 Implementing a comment system with MERN stack is a challenging task that requires strong skills in both front-end and back-end development. However, with careful planning and attention to detail, you can create a functional and scalable comment system that meets the requirements of the task. Good luck!
-PORT=5000
-MONGO_URI=mongodb+srv://mhmiyad6565:rqSoLSGliHGzNzin@cluster0.dy9qp.mongodb.net/?appName=Cluster0
-JWT_SECRET=9f2dffc9ddb6482bb28d51be59ed8cfac90768c92d7944428d9265acce57bb9ac23563d5a37434a438faa0690cc2aa3b2028d14f00508ed8344586fab119e428
