@@ -40,39 +40,34 @@ export const AddComment = ({
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-        <p className="text-yellow-800">Please login to add comments</p>
+      <div className="alert alert-warning">
+        <p>Please login to add comments</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-      <h3 className="font-semibold text-lg mb-3">
-        {parentId ? "Add Reply" : "Add Comment"}
-      </h3>
+    <div className="comment-form">
+      <h3>{parentId ? "Add Reply" : "Add Comment"}</h3>
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
+      {error && <div className="form-error">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Write your comment..."
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
-          rows={4}
-          required
-          maxLength={2000}
-        />
-        <div className="flex gap-2">
+        <div className="form-group">
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Write your comment..."
+            className="form-textarea"
+            required
+            maxLength={2000}
+          />
+        </div>
+        <div className="form-actions">
           <button
             type="submit"
             disabled={loading || !content.trim()}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed"
+            className="btn btn-primary"
           >
             {loading ? "Posting..." : "Post Comment"}
           </button>
@@ -80,7 +75,7 @@ export const AddComment = ({
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+              className="btn btn-secondary"
             >
               Cancel
             </button>

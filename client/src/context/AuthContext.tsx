@@ -12,7 +12,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -34,12 +34,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const data = await authService.login(email, password);
-    setUser({ _id: data._id, name: data.name, email: data.email });
+    setUser({ _id: data._id, username: data.username, email: data.email });
   };
 
-  const register = async (name: string, email: string, password: string) => {
-    const data = await authService.register(name, email, password);
-    setUser({ _id: data._id, name: data.name, email: data.email });
+  const register = async (username: string, email: string, password: string) => {
+    const data = await authService.register(username, email, password);
+    setUser({ _id: data._id, username: data.username, email: data.email });
   };
 
   const logout = () => {

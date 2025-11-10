@@ -1,0 +1,64 @@
+.form {
+  &-group {
+    margin-bottom: $spacing-lg;
+  }
+
+  &-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  &-input,
+  &-textarea {
+    @include input-base;
+  }
+
+  &-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  &-error {
+    background: #fee;
+    border: 1px solid $danger-color;
+    color: $danger-color;
+    padding: $spacing-md;
+    border-radius: $border-radius-sm;
+    margin-bottom: $spacing-lg;
+    font-size: 0.875rem;
+  }
+
+  &-actions {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+  }
+}
+
+.alert {
+  padding: $spacing-md;
+  border-radius: $border-radius-sm;
+  margin-bottom: $spacing-lg;
+  font-size: 0.875rem;
+
+  &-warning {
+    background: $warning-light;
+    border: 1px solid $warning-color;
+    color: #92400e;
+  }
+
+  &-error {
+    background: #fee;
+    border: 1px solid $danger-color;
+    color: $danger-color;
+  }
+
+  &-success {
+    background: #d1fae5;
+    border: 1px solid $success-color;
+    color: #065f46;
+  }
+}

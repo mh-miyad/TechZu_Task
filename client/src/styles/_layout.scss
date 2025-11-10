@@ -1,0 +1,49 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+.main-content {
+  min-height: calc(100vh - 64px);
+  padding: $spacing-xl 0;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.center-container {
+  min-height: 100vh;
+  @include flex-center;
+  padding: $spacing-md;
+}
+
+.auth-card {
+  @include card;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: $shadow-md;
+}
+
+.loading-spinner {
+  @include flex-center;
+  padding: $spacing-2xl;
+
+  .spinner {
+    border: 3px solid $border;
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

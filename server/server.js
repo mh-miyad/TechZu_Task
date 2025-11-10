@@ -1,6 +1,8 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import connectDB from "./config/db.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -13,11 +15,51 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const httpServer = createServer(app);
+
+// Socket.IO configuration
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
 // Middleware
-app.use(cors()); // Enable Cross-Origin Resource Sharing
-app.use(express.json()); // Body parser for JSON
-app.use(express.urlencoded({ extended: true })); // Body parser for form data
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Make io accessible to routes
+app.set('io', io);
+
+// --- Socket.IO Events ---
+io.on('connection', (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  // Join a room for a specific post
+  socket.on('joinPost', (postSlug) => {
+    socket.join(postSlug);
+    console.log(`Socket ${socket.id} joined post: ${postSlug}`);
+  });
+
+  // Leave a room
+  socket.on('leavePost', (postSlug) => {
+    socket.leave(postSlug);
+    console.log(`Socket ${socket.id} left post: ${postSlug}`);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+});
 
 // --- API Routes ---
 app.get("/", (req, res) => {
@@ -31,11 +73,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/comments", commentRoutes);
 
 // --- Error Handling ---
-app.use(notFound); // 404 handler
-app.use(errorHandler); // General error handler
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`WebSocket server is ready`);
 });

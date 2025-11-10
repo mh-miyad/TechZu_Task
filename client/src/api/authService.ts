@@ -3,12 +3,12 @@ import api from "./axios";
 
 export const authService = {
   register: async (
-    name: string,
+    username: string,
     email: string,
     password: string
   ): Promise<AuthResponse> => {
     const { data } = await api.post<AuthResponse>("/auth/register", {
-      name,
+      username,
       email,
       password,
     });
@@ -16,7 +16,7 @@ export const authService = {
       localStorage.setItem("token", data.token);
       localStorage.setItem(
         "user",
-        JSON.stringify({ _id: data._id, name: data.name, email: data.email })
+        JSON.stringify({ _id: data._id, username: data.username, email: data.email })
       );
     }
     return data;
@@ -31,7 +31,7 @@ export const authService = {
       localStorage.setItem("token", data.token);
       localStorage.setItem(
         "user",
-        JSON.stringify({ _id: data._id, name: data.name, email: data.email })
+        JSON.stringify({ _id: data._id, username: data.username, email: data.email })
       );
     }
     return data;

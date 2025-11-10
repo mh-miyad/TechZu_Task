@@ -40,52 +40,49 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Comments</h1>
+    <div className="comments-container">
+      <div className="comments-header">
+        <h1>Comments</h1>
+      </div>
 
       <AddComment postSlug={postSlug} onSuccess={loadComments} />
 
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <label className="text-sm font-medium text-gray-700 mr-2">
-            Sort by:
-          </label>
+      <div className="comments-controls">
+        <div className="sort-control">
+          <label>Sort by:</label>
           <select
             value={sortBy}
             onChange={(e) => {
               setSortBy(e.target.value as SortOption);
               setPage(1);
             }}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="newest">Newest</option>
             <option value="mostLiked">Most Liked</option>
             <option value="mostDisliked">Most Disliked</option>
           </select>
         </div>
-        <div className="text-sm text-gray-600">
+        <div className="comments-count">
           {comments.length} comment{comments.length !== 1 ? "s" : ""}
         </div>
       </div>
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
+      {error && <div className="form-error">{error}</div>}
 
       {loading ? (
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-600">Loading comments...</p>
+        <div className="loading-spinner">
+          <div>
+            <div className="spinner"></div>
+            <p style={{ marginTop: "1rem", color: "#64748b" }}>Loading comments...</p>
+          </div>
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-8 text-gray-600">
+        <div className="empty-state">
           <p>No comments yet. Be the first to comment!</p>
         </div>
       ) : (
         <>
-          <div className="space-y-4">
+          <div>
             {comments.map((comment) => (
               <div key={comment._id}>
                 <CommentItem
@@ -94,7 +91,7 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
                   onReply={handleReply}
                 />
                 {replyingTo === comment._id && (
-                  <div className="ml-8 mt-2">
+                  <div className="comment-replies">
                     <AddComment
                       postSlug={postSlug}
                       parentId={comment._id}
@@ -111,21 +108,21 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
           </div>
 
           {totalPages > 1 && (
-            <div className="mt-8 flex justify-center items-center gap-2">
+            <div className="pagination">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="btn btn-primary"
               >
                 Previous
               </button>
-              <span className="text-gray-700">
+              <span className="pagination-info">
                 Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="btn btn-primary"
               >
                 Next
               </button>

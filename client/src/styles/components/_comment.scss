@@ -1,0 +1,199 @@
+.comments-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-xl $spacing-md;
+}
+
+.comments-header {
+  margin-bottom: $spacing-xl;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-primary;
+  }
+}
+
+.comments-controls {
+  @include flex-between;
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  background: $surface;
+  border-radius: $border-radius;
+  border: 1px solid $border;
+
+  .sort-control {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $text-secondary;
+    }
+
+    select {
+      @include input-base;
+      width: auto;
+      padding: $spacing-xs $spacing-md;
+    }
+  }
+
+  .comments-count {
+    font-size: 0.875rem;
+    color: $text-muted;
+  }
+}
+
+.comment-form {
+  @include card;
+  margin-bottom: $spacing-xl;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: $spacing-md;
+    color: $text-primary;
+  }
+}
+
+.comment-item {
+  @include card;
+  margin-bottom: $spacing-md;
+  transition: $transition;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+
+  &-header {
+    @include flex-between;
+    margin-bottom: $spacing-sm;
+  }
+
+  &-author {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    .author-name {
+      font-weight: 600;
+      color: $text-primary;
+    }
+
+    .comment-date {
+      font-size: 0.75rem;
+      color: $text-muted;
+    }
+  }
+
+  &-actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+
+  &-content {
+    color: $text-secondary;
+    margin-bottom: $spacing-md;
+    line-height: 1.6;
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding-top: $spacing-sm;
+    border-top: 1px solid $border;
+  }
+
+  &-reaction {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-xs $spacing-sm;
+    background: transparent;
+    border: none;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: $transition;
+    color: $text-muted;
+    font-size: 0.875rem;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &:not(:disabled):hover {
+      background: $background;
+    }
+
+    &.active-like {
+      color: $primary-color;
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    &.active-dislike {
+      color: $danger-color;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .icon {
+      font-size: 1rem;
+    }
+  }
+
+  &-reply-btn {
+    @include button-base;
+    background: transparent;
+    color: $primary-color;
+    padding: $spacing-xs $spacing-sm;
+    font-size: 0.875rem;
+
+    &:hover:not(:disabled) {
+      background: rgba(37, 99, 235, 0.1);
+    }
+  }
+}
+
+.comment-replies {
+  margin-left: $spacing-2xl;
+  margin-top: $spacing-md;
+  padding-left: $spacing-md;
+  border-left: 2px solid $border;
+
+  @include responsive(mobile) {
+    margin-left: $spacing-md;
+  }
+}
+
+.pagination {
+  @include flex-center;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+  padding: $spacing-lg 0;
+
+  &-info {
+    color: $text-secondary;
+    font-size: 0.875rem;
+  }
+}
+
+.empty-state {
+  @include flex-center;
+  flex-direction: column;
+  padding: $spacing-2xl;
+  text-align: center;
+
+  .icon {
+    font-size: 3rem;
+    color: $text-muted;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 1rem;
+  }
+}

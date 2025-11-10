@@ -1,12 +1,12 @@
 export interface User {
   _id: string;
-  name: string;
+  username: string;
   email: string;
 }
 
 export interface AuthResponse {
   _id: string;
-  name: string;
+  username: string;
   email: string;
   token: string;
 }
@@ -17,7 +17,7 @@ export interface Comment {
   content: string;
   author: {
     _id: string;
-    name: string;
+    username: string;
     email: string;
   };
   parentId: string | null;

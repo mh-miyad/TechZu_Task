@@ -1,0 +1,60 @@
+.home-page {
+  min-height: 100vh;
+  background: $surface;
+  @include flex-center;
+  padding: $spacing-xl $spacing-md;
+
+  .home-content {
+    max-width: 900px;
+    text-align: center;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: $text-primary;
+      margin-bottom: $spacing-lg;
+
+      @include responsive(mobile) {
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      font-size: 1.25rem;
+      color: $text-secondary;
+      margin-bottom: $spacing-2xl;
+      line-height: 1.6;
+    }
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-2xl;
+  }
+
+  .feature-card {
+    @include card;
+    text-align: center;
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: $spacing-sm;
+      color: $text-primary;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: $text-secondary;
+    }
+  }
+
+  .home-actions {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+}

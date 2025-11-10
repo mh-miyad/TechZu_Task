@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-50">
+        <div className="page-wrapper">
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />

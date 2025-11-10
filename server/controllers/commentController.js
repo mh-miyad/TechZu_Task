@@ -54,6 +54,10 @@ const createComment = asyncHandler(async (req, res) => {
       postSlug,
       parentId
     );
+
+    const io = req.app.get('io');
+    io.to(postSlug).emit('commentCreated', createdComment);
+
     res.status(201).json(createdComment);
   } catch (error) {
     handleServiceError(error, res);
@@ -76,6 +80,10 @@ const updateComment = asyncHandler(async (req, res) => {
       userId,
       content
     );
+
+    const io = req.app.get('io');
+    io.to(updatedComment.postSlug).emit('commentUpdated', updatedComment);
+
     res.json(updatedComment);
   } catch (error) {
     handleServiceError(error, res);
@@ -93,6 +101,10 @@ const deleteComment = asyncHandler(async (req, res) => {
 
   try {
     const result = await commentService.deleteComment(id, userId);
+
+    const io = req.app.get('io');
+    io.to(result.postSlug).emit('commentDeleted', { commentId: id, postSlug: result.postSlug });
+
     res.json(result);
   } catch (error) {
     handleServiceError(error, res);
@@ -110,6 +122,10 @@ const likeComment = asyncHandler(async (req, res) => {
 
   try {
     const updatedComment = await commentService.toggleLike(id, userId);
+
+    const io = req.app.get('io');
+    io.to(updatedComment.postSlug).emit('commentLiked', updatedComment);
+
     res.json(updatedComment);
   } catch (error) {
     handleServiceError(error, res);
@@ -127,6 +143,10 @@ const dislikeComment = asyncHandler(async (req, res) => {
 
   try {
     const updatedComment = await commentService.toggleDislike(id, userId);
+
+    const io = req.app.get('io');
+    io.to(updatedComment.postSlug).emit('commentDisliked', updatedComment);
+
     res.json(updatedComment);
   } catch (error) {
     handleServiceError(error, res);

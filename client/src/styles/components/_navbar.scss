@@ -1,0 +1,75 @@
+.navbar {
+  background: $primary-color;
+  color: white;
+  box-shadow: $shadow;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: $spacing-md;
+    @include flex-between;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .navbar-welcome {
+      font-size: 0.875rem;
+    }
+
+    .navbar-link {
+      padding: $spacing-sm $spacing-md;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: $border-radius-sm;
+      color: white;
+      transition: $transition;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    .navbar-btn-logout {
+      @include button-base;
+      background: $danger-color;
+      color: white;
+
+      &:hover {
+        background: $danger-hover;
+      }
+    }
+
+    .navbar-btn-register {
+      @include button-base;
+      background: $success-color;
+      color: white;
+
+      &:hover {
+        background: $success-hover;
+      }
+    }
+  }
+
+  @include responsive(mobile) {
+    .navbar-menu {
+      flex-wrap: wrap;
+      gap: $spacing-sm;
+    }
+
+    .navbar-welcome {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

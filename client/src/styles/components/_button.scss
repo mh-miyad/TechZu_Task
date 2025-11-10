@@ -1,0 +1,74 @@
+.btn {
+  @include button-base;
+
+  &-primary {
+    background: $primary-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $primary-hover;
+    }
+  }
+
+  &-secondary {
+    background: $secondary-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $secondary-hover;
+    }
+  }
+
+  &-success {
+    background: $success-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $success-hover;
+    }
+  }
+
+  &-danger {
+    background: $danger-color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: $danger-hover;
+    }
+  }
+
+  &-outline {
+    background: transparent;
+    border: 1px solid $border;
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+      background: $background;
+    }
+  }
+
+  &-link {
+    background: transparent;
+    color: $primary-color;
+    padding: $spacing-xs $spacing-sm;
+
+    &:hover:not(:disabled) {
+      color: $primary-hover;
+      text-decoration: underline;
+    }
+  }
+
+  &-small {
+    padding: $spacing-xs $spacing-sm;
+    font-size: 0.75rem;
+  }
+
+  &-large {
+    padding: $spacing-md $spacing-xl;
+    font-size: 1rem;
+  }
+
+  &-full {
+    width: 100%;
+  }
+}

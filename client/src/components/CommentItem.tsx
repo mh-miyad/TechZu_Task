@@ -93,28 +93,27 @@ export const CommentItem = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 mb-3">
-      <div className="flex items-start justify-between mb-2">
-        <div>
-          <span className="font-semibold text-gray-900">
-            {comment.author.name}
-          </span>
-          <span className="text-gray-500 text-sm ml-2">
+    <div className="comment-item">
+      <div className="comment-item-header">
+        <div className="comment-item-author">
+          <span className="author-name">{comment.author.username}</span>
+          <span className="comment-date">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>
         {isOwner && !isEditing && (
-          <div className="flex gap-2">
+          <div className="comment-item-actions">
             <button
               onClick={() => setIsEditing(true)}
-              className="text-blue-600 text-sm hover:underline"
+              className="btn btn-link btn-small"
             >
               Edit
             </button>
             <button
               onClick={handleDelete}
               disabled={loading}
-              className="text-red-600 text-sm hover:underline"
+              className="btn btn-link btn-small"
+              style={{ color: "#ef4444" }}
             >
               Delete
             </button>
@@ -123,18 +122,20 @@ export const CommentItem = ({
       </div>
 
       {isEditing ? (
-        <div className="space-y-2">
-          <textarea
-            value={editContent}
-            onChange={(e) => setEditContent(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows={3}
-          />
-          <div className="flex gap-2">
+        <div>
+          <div className="form-group">
+            <textarea
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="form-textarea"
+              rows={3}
+            />
+          </div>
+          <div className="form-actions">
             <button
               onClick={handleEdit}
               disabled={loading}
-              className="px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+              className="btn btn-primary btn-small"
             >
               Save
             </button>
@@ -143,58 +144,51 @@ export const CommentItem = ({
                 setIsEditing(false);
                 setEditContent(comment.content);
               }}
-              className="px-4 py-1 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+              className="btn btn-secondary btn-small"
             >
               Cancel
             </button>
           </div>
         </div>
       ) : (
-        <p className="text-gray-800 mb-3">{comment.content}</p>
+        <p className="comment-item-content">{comment.content}</p>
       )}
 
-      <div className="flex items-center gap-4 text-sm">
+      <div className="comment-item-footer">
         <button
           onClick={handleLike}
           disabled={!isAuthenticated || loading}
-          className={`flex items-center gap-1 ${
-            hasLiked ? "text-blue-600" : "text-gray-600"
-          } hover:text-blue-600 disabled:cursor-not-allowed`}
+          className={`comment-item-reaction ${hasLiked ? "active-like" : ""}`}
         >
-          <span>👍</span>
+          <span className="icon">👍</span>
           <span>{comment.likeCount}</span>
         </button>
 
         <button
           onClick={handleDislike}
           disabled={!isAuthenticated || loading}
-          className={`flex items-center gap-1 ${
-            hasDisliked ? "text-red-600" : "text-gray-600"
-          } hover:text-red-600 disabled:cursor-not-allowed`}
+          className={`comment-item-reaction ${hasDisliked ? "active-dislike" : ""}`}
         >
-          <span>👎</span>
+          <span className="icon">👎</span>
           <span>{comment.dislikeCount}</span>
         </button>
 
         {onReply && isAuthenticated && (
           <button
             onClick={() => onReply(comment._id)}
-            className="text-gray-600 hover:text-blue-600"
+            className="comment-item-reply-btn"
           >
             Reply
           </button>
         )}
 
-        <button
-          onClick={loadReplies}
-          className="text-gray-600 hover:text-blue-600"
-        >
+        <button onClick={loadReplies} className="comment-item-reply-btn">
           {showReplies ? "Hide Replies" : "Show Replies"}
         </button>
       </div>
 
       {showReplies && replies.length > 0 && (
-        <div className="ml-8 mt-4 space-y-3">
+        <div className="comment-replies">
           {replies.map((reply) => (
             <CommentItem key={reply._id} comment={reply} onUpdate={onUpdate} />
           ))}
