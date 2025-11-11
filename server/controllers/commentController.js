@@ -1,30 +1,30 @@
 import asyncHandler from 'express-async-handler';
 import { commentService } from '../services/commentService.js';
-import mongoose from 'mongoose';
 
 /**
- * Custom error handler for services
- * Throws errors with specific status codes
+ * A helper function to safely emit Socket.IO events.
+ * It checks if the 'io' object exists on the request before attempting to use it.
+ * This prevents crashes in production environments where Socket.IO is not initialized.
+ * @param {object} req - The Express request object.
+ * @param {string} room - The Socket.IO room to emit to (e.g., a postSlug).
+ * @param {string} event - The name of the event to emit.
+ * @param {object} data - The payload to send with the event.
  */
-const handleServiceError = (error, res) => {
-  if (error.status) {
-    res.status(error.status);
-  } else {
-    // Default to 400 for business logic errors
-    res.status(400);
+const safeSocketEmit = (req, room, event, data) => {
+  const io = req.app.get('io');
+  if (io && room) {
+    io.to(room).emit(event, data);
   }
+};
+
+const handleServiceError = (error, res) => {
+  res.status(error.status || 400);
   throw new Error(error.message);
 };
 
-/**
- * @desc Get all comments for a post (with sorting & pagination)
- * @route GET /api/comments/:postSlug
- * @access Public
- */
 const getComments = asyncHandler(async (req, res) => {
   const { postSlug } = req.params;
   const { sortBy, page, limit } = req.query;
-
   try {
     const data = await commentService.getCommentsForPost(
       postSlug,
@@ -38,15 +38,9 @@ const getComments = asyncHandler(async (req, res) => {
   }
 });
 
-/**
- * @desc Create a new comment
- * @route POST /api/comments
- * @access Private
- */
 const createComment = asyncHandler(async (req, res) => {
   const { content, postSlug, parentId = null } = req.body;
   const authorId = req.user._id;
-
   try {
     const createdComment = await commentService.createNewComment(
       authorId,
@@ -54,113 +48,86 @@ const createComment = asyncHandler(async (req, res) => {
       postSlug,
       parentId
     );
-
-    const io = req.app.get('io');
-    io.to(postSlug).emit('commentCreated', createdComment);
-
+    safeSocketEmit(req, postSlug, 'commentCreated', createdComment);
     res.status(201).json(createdComment);
   } catch (error) {
     handleServiceError(error, res);
   }
 });
 
-/**
- * @desc Update a comment
- * @route PUT /api/comments/:id
- * @access Private
- */
 const updateComment = asyncHandler(async (req, res) => {
   const { content } = req.body;
   const { id } = req.params;
   const userId = req.user._id;
-
   try {
     const updatedComment = await commentService.updateComment(
       id,
       userId,
       content
     );
-
-    const io = req.app.get('io');
-    io.to(updatedComment.postSlug).emit('commentUpdated', updatedComment);
-
+    safeSocketEmit(
+      req,
+      updatedComment.postSlug,
+      'commentUpdated',
+      updatedComment
+    );
     res.json(updatedComment);
   } catch (error) {
     handleServiceError(error, res);
   }
 });
 
-/**
- * @desc Delete a comment
- * @route DELETE /api/comments/:id
- * @access Private
- */
 const deleteComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
-
   try {
     const result = await commentService.deleteComment(id, userId);
-
-    const io = req.app.get('io');
-    io.to(result.postSlug).emit('commentDeleted', { commentId: id, postSlug: result.postSlug });
-
+    safeSocketEmit(req, result.postSlug, 'commentDeleted', {
+      commentId: id,
+      postSlug: result.postSlug,
+    });
     res.json(result);
   } catch (error) {
     handleServiceError(error, res);
   }
 });
 
-/**
- * @desc Like a comment
- * @route POST /api/comments/:id/like
- * @access Private
- */
 const likeComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
-
   try {
     const updatedComment = await commentService.toggleLike(id, userId);
-
-    const io = req.app.get('io');
-    io.to(updatedComment.postSlug).emit('commentLiked', updatedComment);
-
+    safeSocketEmit(
+      req,
+      updatedComment.postSlug,
+      'commentLiked',
+      updatedComment
+    );
     res.json(updatedComment);
   } catch (error) {
     handleServiceError(error, res);
   }
 });
 
-/**
- * @desc Dislike a comment
- * @route POST /api/comments/:id/dislike
- * @access Private
- */
 const dislikeComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
-
   try {
     const updatedComment = await commentService.toggleDislike(id, userId);
-
-    const io = req.app.get('io');
-    io.to(updatedComment.postSlug).emit('commentDisliked', updatedComment);
-
+    safeSocketEmit(
+      req,
+      updatedComment.postSlug,
+      'commentDisliked',
+      updatedComment
+    );
     res.json(updatedComment);
   } catch (error) {
     handleServiceError(error, res);
   }
 });
 
-/**
- * @desc Get replies for a single comment
- * @route GET /api/comments/:id/replies
- * @access Public
- */
 const getReplies = asyncHandler(async (req, res) => {
   const { id: parentId } = req.params;
-
   try {
     const replies = await commentService.getCommentReplies(parentId);
     res.json(replies);

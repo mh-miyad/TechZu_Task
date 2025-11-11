@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { commentService } from "../api/commentService";
+import { useNotification } from "../context/NotificationContext";
+import { useSocket } from "../hooks/useSocket";
 import type { Comment, SortOption } from "../types";
 import { AddComment } from "./AddComment";
 import { CommentItem } from "./CommentItem";
-import { useSocket } from "../hooks/useSocket";
-import { useNotification } from "../context/NotificationContext";
 
 interface CommentListProps {
   postSlug: string;
@@ -20,13 +20,38 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const { addNotification } = useNotification();
 
+  const handleUpdateCommentInList = (updatedComment: Comment) => {
+    setComments((prevComments) =>
+      prevComments.map((c) =>
+        c._id === updatedComment._id ? updatedComment : c
+      )
+    );
+  };
+
+  const handleAddCommentToList = (newComment: Comment) => {
+    // Add new top-level comments to the top of the list
+    if (!newComment.parentId) {
+      setComments((prevComments) => [newComment, ...prevComments]);
+    }
+    // For replies, a full reload is simpler for now
+    else {
+      loadComments();
+    }
+  };
+
+  const handleRemoveCommentFromList = (commentId: string) => {
+    setComments((prevComments) =>
+      prevComments.filter((c) => c._id !== commentId)
+    );
+  };
+
   const loadComments = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const data = await commentService.getComments(postSlug, page, 10, sortBy);
       setComments(data.comments);
-      setTotalPages(data.pages);
+      setTotalPages(data.page);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to load comments");
     } finally {
@@ -36,23 +61,13 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
 
   useSocket(postSlug, {
     onCommentCreated: () => {
-      addNotification('info', 'New comment added');
-      loadComments();
+      addNotification("info", "New comment arrived");
+      loadComments(); // Socket reload is fine
     },
-    onCommentUpdated: () => {
-      addNotification('info', 'Comment updated');
-      loadComments();
-    },
-    onCommentDeleted: () => {
-      addNotification('info', 'Comment deleted');
-      loadComments();
-    },
-    onCommentLiked: () => {
-      loadComments();
-    },
-    onCommentDisliked: () => {
-      loadComments();
-    },
+    onCommentUpdated: () => loadComments(),
+    onCommentDeleted: () => loadComments(),
+    onCommentLiked: () => loadComments(),
+    onCommentDisliked: () => loadComments(),
   });
 
   useEffect(() => {
@@ -69,7 +84,10 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
         <h1>Comments</h1>
       </div>
 
-      <AddComment postSlug={postSlug} onSuccess={loadComments} />
+      <AddComment
+        postSlug={postSlug}
+        onCommentCreated={handleAddCommentToList}
+      />
 
       <div className="comments-controls">
         <div className="sort-control">
@@ -97,7 +115,9 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
         <div className="loading-spinner">
           <div>
             <div className="spinner"></div>
-            <p style={{ marginTop: "1rem", color: "#64748b" }}>Loading comments...</p>
+            <p style={{ marginTop: "1rem", color: "#64748b" }}>
+              Loading comments...
+            </p>
           </div>
         </div>
       ) : comments.length === 0 ? (
@@ -111,7 +131,8 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
               <div key={comment._id}>
                 <CommentItem
                   comment={comment}
-                  onUpdate={loadComments}
+                  onCommentUpdated={handleUpdateCommentInList}
+                  onCommentDeleted={handleRemoveCommentFromList}
                   onReply={handleReply}
                 />
                 {replyingTo === comment._id && (
@@ -119,9 +140,9 @@ export const CommentList = ({ postSlug }: CommentListProps) => {
                     <AddComment
                       postSlug={postSlug}
                       parentId={comment._id}
-                      onSuccess={() => {
+                      onCommentCreated={() => {
                         setReplyingTo(null);
-                        loadComments();
+                        loadComments(); // Reload to show new reply
                       }}
                       onCancel={() => setReplyingTo(null)}
                     />

@@ -1,18 +1,19 @@
 import { useState, type FormEvent } from "react";
 import { commentService } from "../api/commentService";
 import { useAuth } from "../context/AuthContext";
+import type { Comment } from "../types";
 
 interface AddCommentProps {
   postSlug: string;
   parentId?: string;
-  onSuccess: () => void;
+  onCommentCreated: (newComment: Comment) => void;
   onCancel?: () => void;
 }
 
 export const AddComment = ({
   postSlug,
   parentId,
-  onSuccess,
+  onCommentCreated,
   onCancel,
 }: AddCommentProps) => {
   const [content, setContent] = useState("");
@@ -28,9 +29,13 @@ export const AddComment = ({
     setError("");
 
     try {
-      await commentService.createComment(postSlug, content, parentId);
+      const newComment = await commentService.createComment(
+        postSlug,
+        content,
+        parentId
+      );
       setContent("");
-      onSuccess();
+      onCommentCreated(newComment);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to add comment");
     } finally {

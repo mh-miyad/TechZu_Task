@@ -15,9 +15,13 @@ export const useSocket = (postSlug: string, callbacks: SocketCallbacks) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    // Skip WebSocket if URL is not configured (e.g., on Netlify/production)
-    if (!SOCKET_URL || SOCKET_URL.trim() === '') {
-      console.log('WebSocket disabled - VITE_SOCKET_URL not configured');
+    // Only connect in development and if SOCKET_URL is provided
+    if (import.meta.env.MODE !== 'development' || !SOCKET_URL) {
+      if (import.meta.env.MODE !== 'development') {
+        console.log('WebSocket disabled in production mode.');
+      } else {
+        console.log('WebSocket disabled - VITE_SOCKET_URL not configured.');
+      }
       return;
     }
 

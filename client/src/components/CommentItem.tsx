@@ -1,18 +1,21 @@
 import { useState } from "react";
-import { FaEdit, FaTrash, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { FaEdit, FaThumbsDown, FaThumbsUp, FaTrash } from "react-icons/fa";
 import { commentService } from "../api/commentService";
 import { useAuth } from "../context/AuthContext";
 import type { Comment } from "../types";
+import { CommentList } from "./CommentList";
 
 interface CommentItemProps {
   comment: Comment;
-  onUpdate: () => void;
+  onCommentUpdated: (updatedComment: Comment) => void;
+  onCommentDeleted: (commentId: string) => void;
   onReply?: (parentId: string) => void;
 }
 
 export const CommentItem = ({
   comment,
-  onUpdate,
+  onCommentUpdated,
+  onCommentDeleted,
   onReply,
 }: CommentItemProps) => {
   const { user, isAuthenticated } = useAuth();
@@ -20,7 +23,6 @@ export const CommentItem = ({
   const [editContent, setEditContent] = useState(comment.content);
   const [loading, setLoading] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
-  const [replies, setReplies] = useState<Comment[]>([]);
 
   const isOwner = user?._id === comment.author._id;
   const hasLiked = isAuthenticated && comment.likes.includes(user!._id);
@@ -28,36 +30,33 @@ export const CommentItem = ({
 
   const handleLike = async () => {
     if (!isAuthenticated) return;
-    setLoading(true);
     try {
-      await commentService.likeComment(comment._id);
-      onUpdate();
+      const updatedComment = await commentService.likeComment(comment._id);
+      onCommentUpdated(updatedComment);
     } catch (err) {
       console.error("Failed to like comment", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleDislike = async () => {
     if (!isAuthenticated) return;
-    setLoading(true);
     try {
-      await commentService.dislikeComment(comment._id);
-      onUpdate();
+      const updatedComment = await commentService.dislikeComment(comment._id);
+      onCommentUpdated(updatedComment);
     } catch (err) {
       console.error("Failed to dislike comment", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleEdit = async () => {
     setLoading(true);
     try {
-      await commentService.updateComment(comment._id, editContent);
+      const updatedComment = await commentService.updateComment(
+        comment._id,
+        editContent
+      );
+      onCommentUpdated(updatedComment);
       setIsEditing(false);
-      onUpdate();
     } catch (err) {
       console.error("Failed to update comment", err);
     } finally {
@@ -71,25 +70,11 @@ export const CommentItem = ({
     setLoading(true);
     try {
       await commentService.deleteComment(comment._id);
-      onUpdate();
+      onCommentDeleted(comment._id);
     } catch (err) {
       console.error("Failed to delete comment", err);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const loadReplies = async () => {
-    if (showReplies) {
-      setShowReplies(false);
-      return;
-    }
-    try {
-      const data = await commentService.getReplies(comment._id);
-      setReplies(data);
-      setShowReplies(true);
-    } catch (err) {
-      console.error("Failed to load replies", err);
     }
   };
 
@@ -104,10 +89,7 @@ export const CommentItem = ({
         </div>
         {isOwner && !isEditing && (
           <div className="comment-item-actions">
-            <button
-              onClick={() => setIsEditing(true)}
-              className="btn-icon"
-            >
+            <button onClick={() => setIsEditing(true)} className="btn-icon">
               <FaEdit />
             </button>
             <button
@@ -160,16 +142,22 @@ export const CommentItem = ({
           disabled={!isAuthenticated || loading}
           className={`comment-item-reaction ${hasLiked ? "active-like" : ""}`}
         >
-          <span className="icon"><FaThumbsUp /></span>
+          <span className="icon">
+            <FaThumbsUp />
+          </span>
           <span>{comment.likeCount}</span>
         </button>
 
         <button
           onClick={handleDislike}
           disabled={!isAuthenticated || loading}
-          className={`comment-item-reaction ${hasDisliked ? "active-dislike" : ""}`}
+          className={`comment-item-reaction ${
+            hasDisliked ? "active-dislike" : ""
+          }`}
         >
-          <span className="icon"><FaThumbsDown /></span>
+          <span className="icon">
+            <FaThumbsDown />
+          </span>
           <span>{comment.dislikeCount}</span>
         </button>
 
@@ -182,16 +170,18 @@ export const CommentItem = ({
           </button>
         )}
 
-        <button onClick={loadReplies} className="comment-item-reply-btn">
-          {showReplies ? "Hide Replies" : "Show Replies"}
+        {/* For simplicity, replies are fetched on demand and not managed in the main state */}
+        <button
+          onClick={() => setShowReplies(!showReplies)}
+          className="comment-item-reply-btn"
+        >
+          {showReplies ? "Hide Replies" : `View Replies `}
         </button>
       </div>
 
-      {showReplies && replies.length > 0 && (
+      {showReplies && (
         <div className="comment-replies">
-          {replies.map((reply) => (
-            <CommentItem key={reply._id} comment={reply} onUpdate={onUpdate} />
-          ))}
+          <CommentList postSlug={comment.postSlug} />
         </div>
       )}
     </div>

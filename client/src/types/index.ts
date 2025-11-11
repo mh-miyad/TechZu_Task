@@ -37,4 +37,4 @@ export interface CommentsResponse {
   total: number;
 }
 
-export type SortOption = 'newest' | 'mostLiked' | 'mostDisliked';
+export type SortOption = "newest" | "mostLiked" | "mostDisliked";
