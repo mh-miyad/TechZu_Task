@@ -11,13 +11,32 @@ connectDB();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const whitelist = [
+  'http://localhost:5173',
+  'https://techzu-frontend.netlify.app',
+];
+
+// Add CLIENT_URL from .env to the whitelist if it exists
+if (process.env.CLIENT_URL) {
+  if (!whitelist.includes(process.env.CLIENT_URL)) {
+    whitelist.push(process.env.CLIENT_URL);
+  }
+}
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
